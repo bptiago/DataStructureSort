@@ -6,58 +6,46 @@ import structure.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        CsvReader reader = new CsvReader();
+        imprimirRelatorio("aleatorio");
+        imprimirRelatorio("crescente");
+        imprimirRelatorio("decrescente");
+    }
 
-        // Arquivos aleatórios
-        int file_num = 100;
+    public static void imprimirRelatorio(String fileName) {
+        int fileNum = 100;
+
         for (int i = 0; i < 3; i++) {
-            ArrayList<Integer> nums = reader.read(String.format("src/reader/aleatorio_%d.csv", file_num));
+            CsvReader reader = new CsvReader();
+            ArrayList<Integer> nums = reader.read(String.format("src/reader/%s_%d.csv", fileName, fileNum));
 
-            long inicio = System.nanoTime();
-            ArrayList<Integer> sortedNums = SortAlgorithm.insertionSort(nums);
-            long fim = System.nanoTime();
+            long inicio1 = System.nanoTime();
+            ArrayList<Integer> insertionSortNums = SortAlgorithm.insertionSort(nums);
+            long fim1 = System.nanoTime();
 
-            long timer = fim - inicio;
+            long inicio2 = System.nanoTime();
+            ArrayList<Integer> bubbleSortNums = SortAlgorithm.bubbleSort(nums);
+            long fim2 = System.nanoTime();
 
-            System.out.println(String.format("Leitura do arquivo: aleatorio_%d.csv - %d ns (nanosegundos)", file_num, timer));
-            System.out.println(SortAlgorithm.listToString(sortedNums));
-            System.out.println(); // Pular linha
+            long inicio3 = System.nanoTime();
+            ArrayList<Integer> quickSortNums = SortAlgorithm.quickSort(nums);
+            long fim3 = System.nanoTime();
 
-            file_num *= 10;
-        }
+            long timerInsertionSort = fim1 - inicio1;
+            long timerBubbleSort = fim2 - inicio2;
+            long timerQuickSort = fim3 - inicio3;
 
-        file_num = 100;
-        for (int i = 0; i < 3; i++) {
-            ArrayList<Integer> nums = reader.read(String.format("src/reader/crescente_%d.csv", file_num));
+            System.out.println(String.format("Leitura do arquivo: %s_%d.csv", fileName, fileNum));
 
-            long inicio = System.nanoTime();
-            ArrayList<Integer> sortedNums = SortAlgorithm.insertionSort(nums);
-            long fim = System.nanoTime();
+            System.out.println(String.format("Algoritmo Insertion Sort - %d ns (nanosegundos)", timerInsertionSort));
+//            System.out.println(SortAlgorithm.listToString(insertionSortNums)); --> imprime a lista ordenada como STRING
 
-            long timer = fim - inicio;
+            System.out.println(String.format("Algoritmo Bubble Sort - %d ns (nanosegundos)", timerBubbleSort));
+//            System.out.println(SortAlgorithm.listToString(bubbleSortNums)); --> imprime a lista ordenada como STRING
 
-            System.out.println(String.format("Leitura do arquivo: crescente_%d.csv - %d ns (nanosegundos)", file_num, timer));
-            System.out.println(SortAlgorithm.listToString(sortedNums));
-            System.out.println(); // Pular linha
+            System.out.println(String.format("Algoritmo QuickSort Sort - %d ns (nanosegundos)\n", timerQuickSort));
+//            System.out.println(SortAlgorithm.listToString(bubbleSortNums)); --> imprime a lista ordenada como STRING
 
-            file_num *= 10;
-        }
-
-        file_num = 100;
-        for (int i = 0; i < 3; i++) {
-            ArrayList<Integer> nums = reader.read(String.format("src/reader/decrescente_%d.csv", file_num));
-
-            long inicio = System.nanoTime();
-            ArrayList<Integer> sortedNums = SortAlgorithm.insertionSort(nums);
-            long fim = System.nanoTime();
-
-            long timer = fim - inicio;
-
-            System.out.println(String.format("Leitura do arquivo: decrescente_%d.csv - %d ns (nanosegundos)", file_num, timer));
-            System.out.println(SortAlgorithm.listToString(sortedNums));
-            System.out.println(); // Pular linha
-
-            file_num *= 10;
+            fileNum *= 10;
         }
     }
 }
